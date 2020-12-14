@@ -1,0 +1,3 @@
+[submodule "KoBART"]
+	path = KoBART
+	url = https://github.com/SKT-AI/KoBART.git
