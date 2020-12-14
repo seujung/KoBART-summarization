@@ -47,9 +47,12 @@ class KoBARTSummaryDataset(Dataset):
         dec_input_ids = self.add_padding_data(dec_input_ids)
         label_ids = self.add_ignored_data(label_ids)
 
-        return (torch.tensor(input_ids),
-                torch.tensor(dec_input_ids),
-                torch.tensor(label_ids))
+#         return (torch.tensor(input_ids),
+#                 torch.tensor(dec_input_ids),
+#                 torch.tensor(label_ids))
+        return {'input_ids': np.array(input_ids, dtype=np.int_),
+                'decoder_input_ids': np.array(dec_input_ids, dtype=np.int_),
+                'labels': np.array(label_ids, dtype=np.int_)}
     
     def __len__(self):
         return self.len

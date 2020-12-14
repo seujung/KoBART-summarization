@@ -10,6 +10,7 @@ from torch.utils.data import DataLoader, Dataset
 from dataset import KoBARTSummaryDataset
 from transformers import BartForConditionalGeneration, PreTrainedTokenizerFast
 from transformers.optimization import AdamW, get_cosine_schedule_with_warmup
+from kobart import get_pytorch_kobart_model, get_kobart_tokenizer
 
 parser = argparse.ArgumentParser(description='KoBART Summarization')
 
@@ -28,12 +29,12 @@ class ArgsBase():
             parents=[parent_parser], add_help=False)
         parser.add_argument('--train_file',
                             type=str,
-                            default='data/train.csv',
+                            default='data/train.tsv',
                             help='train file')
 
         parser.add_argument('--test_file',
                             type=str,
-                            default='data/test.csv',
+                            default='data/test.tsv',
                             help='test file')
 
         parser.add_argument('--batch_size',
@@ -57,7 +58,10 @@ class KobartSummaryModule(pl.LightningDataModule):
         self.max_len = max_len
         self.train_file_path = train_file
         self.test_file_path = test_file
-        self.tok = tok
+        if tok is None:
+            self.tok = get_kobart_tokenizer()
+        else:
+            self.tok = tok
         self.num_workers = num_workers
 
     @staticmethod
@@ -163,20 +167,24 @@ class Base(pl.LightningModule):
 class KoBARTConditionalGeneration(Base):
     def __init__(self, hparams, **kwargs):
         super(KoBARTConditionalGeneration, self).__init__(hparams, **kwargs)
-        self.model = BartForConditionalGeneration.from_pretrained(self.hparams.model_path)
+        self.model = BartForConditionalGeneration.from_pretrained(get_pytorch_kobart_model())
         self.model.train()
         self.bos_token = '<s>'
         self.eos_token = '</s>'
-        self.tokenizer = PreTrainedTokenizerFast(
-            tokenizer_file=os.path.join(self.hparams.tokenizer_path, 'model.json'),
-            bos_token=self.bos_token, eos_token=self.eos_token, unk_token='<unk>', pad_token='<pad>', mask_token='<mask>')
+        self.pad_token_id = 0
+        self.tokenizer = get_kobart_tokenizer()
 
     def forward(self, inputs):
+
+        attention_mask = inputs['input_ids'].ne(self.pad_token_id).float()
+        decoder_attention_mask = inputs['decoder_input_ids'].ne(self.pad_token_id).float()
+        
         return self.model(input_ids=inputs['input_ids'],
-                          attention_mask=inputs['attention_mask'],
+                          attention_mask=attention_mask,
                           decoder_input_ids=inputs['decoder_input_ids'],
-                          decoder_attention_mask=inputs['decoder_attention_mask'],
+                          decoder_attention_mask=decoder_attention_mask,
                           labels=inputs['labels'], return_dict=True)
+
 
     def training_step(self, batch, batch_idx):
         outs = self(batch)
@@ -195,17 +203,6 @@ class KoBARTConditionalGeneration(Base):
             losses.append(loss)
         self.log('val_loss', torch.stack(losses).mean(), prog_bar=True)
 
-    def summary(self, text):
-        input_ids =  [self.tokenizer.bos_token_id] + self.tokenizer.encode(text) + [self.tokenizer.eos_token_id]
-        res_ids = self.model.generate(torch.tensor([input_ids]),
-                                            max_length=self.hparams.max_seq_len,
-                                            num_beams=5,
-                                            eos_token_id=self.tokenizer.eos_token_id,
-                                            bad_words_ids=[[self.tokenizer.unk_token_id]])        
-        a = self.tokenizer.batch_decode(res_ids.tolist())[0]
-        return a.replace('<s>', '').replace('</s>', '')
-
-
 if __name__ == '__main__':
     parser = Base.add_model_specific_args(parser)
     parser = ArgsBase.add_model_specific_args(parser)
@@ -218,9 +215,10 @@ if __name__ == '__main__':
 
     dm = KobartSummaryModule(args.train_file,
                         args.test_file,
-                        os.path.join(args.tokenizer_path, 'model.json'),
+                        None,
                         max_len=args.max_len,
                         num_workers=args.num_workers)
+    
     checkpoint_callback = pl.callbacks.ModelCheckpoint(monitor='val_loss',
                                                        dirpath=args.default_root_dir,
                                                        filename='model_chp/{epoch:02d}-{val_loss:.3f}',
