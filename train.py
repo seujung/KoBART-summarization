@@ -226,7 +226,7 @@ if __name__ == '__main__':
                                                        save_last=True,
                                                        mode='min',
                                                        save_top_k=-1,
-                                                       prefix='kobart_chitchat')
+                                                       prefix='kobart_summary')
     tb_logger = pl_loggers.TensorBoardLogger(os.path.join(args.default_root_dir, 'tb_logs'))
     lr_logger = pl.callbacks.LearningRateMonitor()
     trainer = pl.Trainer.from_argparse_args(args, logger=tb_logger,
