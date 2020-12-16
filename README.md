@@ -52,9 +52,6 @@ python train.py  --gradient_clip_val 1.0 --max_epochs 50 --default_root_dir logs
 |3|koBART|최근 경영애로를 겪고 있는 소상공인과 자영업자의 금융비용 부담을 완화하고 서민경제의 활력을 제고하기 위해 신용보증기금·기술보증기금·신용보증재단 중앙회·기업은행은 31일 서울 중구 기업은행 본점에서 ‘소상공인·자영업자 특별 금융지원 업무협약’을 체결했다.|
 
 
- 
-[Prototype table]
-
 
 ## Model Performance
 - Test Data 기준으로 rouge score를 산출함
