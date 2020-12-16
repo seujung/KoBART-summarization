@@ -18,6 +18,7 @@ streamlit==0.72.0
 ## Data
 - [Dacon 한국어 문서 생성요약 AI 경진대회](https://dacon.io/competitions/official/235673/overview/) 의 학습 데이터를 활용함
 - 학습 데이터에서 임의로 Train / Test 데이터를 생성함
+- 데이터 탐색에 용이하게 tsv 형태로 데이터를 변환함
 - Data 구조
     - Train Data : 34,242
     - Test Data : 8,501
