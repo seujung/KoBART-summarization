@@ -22,6 +22,7 @@ streamlit==0.72.0
 - Data 구조
     - Train Data : 34,242
     - Test Data : 8,501
+- default로 data/train.tsv, data/test.tsv 형태로 저장함
   
 | news  | summary |
 |-------|--------:|
@@ -55,7 +56,7 @@ python train.py  --gradient_clip_val 1.0 --max_epochs 50 --default_root_dir logs
 
 ## Model Performance
 - Test Data 기준으로 rouge score를 산출함
-- Score 산출 방법은 Dacon 한국어 문서 생셩요약 AI 경진대회 metric을 활용함
+- Score 산출 방법은 Dacon 한국어 문서 생요약 AI 경진대회 metric을 활용함
   
 | | rouge-1 |rouge-2|rouge-l|
 |-------|--------:|--------:|--------:|
