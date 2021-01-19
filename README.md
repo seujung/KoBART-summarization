@@ -2,10 +2,7 @@
 
 ## Install KoBART
 ```
-git submodule update --init --recursive
-cd KoBART
-pip install -r requirements.txt
-pip install .
+pip install git+https://github.com/SKT-AI/KoBART#egg=kobart
 ```
 
 ## Requirements
