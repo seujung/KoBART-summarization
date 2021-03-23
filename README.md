@@ -7,8 +7,8 @@ pip install git+https://github.com/SKT-AI/KoBART#egg=kobart
 
 ## Requirements
 ```
-pytorch==1.7.0
-transformers==4.0.0
+pytorch==1.7.1
+transformers==4.3.3
 pytorch-lightning==1.1.0
 streamlit==0.72.0
 ```
@@ -29,8 +29,14 @@ streamlit==0.72.0
 ## How to Train
 - KoBART summarization fine-tuning
 ```
+bash install_kobart.sh
 pip install -r requirements.txt
-python train.py  --gradient_clip_val 1.0 --max_epochs 50 --default_root_dir logs  --gpus 1 --batch_size 4
+
+[use gpu]
+python train.py  --gradient_clip_val 1.0 --max_epochs 50 --default_root_dir logs  --gpus 1 --batch_size 4 --num_workers 4
+
+[use cpu]
+python train.py  --gradient_clip_val 1.0 --max_epochs 50 --default_root_dir logs  --batch_size 4 --num_workers 4
 ```
 ## Generation Sample
 | ||Text|
