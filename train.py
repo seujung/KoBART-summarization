@@ -180,11 +180,11 @@ class KoBARTConditionalGeneration(Base):
         attention_mask = inputs['input_ids'].ne(self.pad_token_id).float()
         decoder_attention_mask = inputs['decoder_input_ids'].ne(self.pad_token_id).float()
         
-        return self.model(input_ids=inputs['input_ids'],
+        return self.model(input_ids=inputs['input_ids'].long(),
                           attention_mask=attention_mask,
-                          decoder_input_ids=inputs['decoder_input_ids'],
+                          decoder_input_ids=inputs['decoder_input_ids'].long(),
                           decoder_attention_mask=decoder_attention_mask,
-                          labels=inputs['labels'], return_dict=True)
+                          labels=inputs['labels'].long(), return_dict=True)
 
 
     def training_step(self, batch, batch_idx):
