@@ -5,6 +5,15 @@
 pip install git+https://github.com/SKT-AI/KoBART#egg=kobart
 ```
 
+## Download binary
+```
+pip install gdown
+python download_binary.py
+
+kobart_summary
+├── config.json
+├── pytorch_model.bin
+```
 ## Requirements
 ```
 pytorch==1.7.1

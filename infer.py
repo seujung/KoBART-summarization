@@ -5,7 +5,7 @@ from transformers.models.bart import BartForConditionalGeneration
 
 @st.cache
 def load_model():
-    model = BartForConditionalGeneration.from_pretrained('./summary_binary')
+    model = BartForConditionalGeneration.from_pretrained('./kobart_summary')
     # tokenizer = get_kobart_tokenizer()
     return model
 
