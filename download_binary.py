@@ -8,7 +8,6 @@ else:
     os.system("rm -rf kobary_summary")
     os.system("mkdir kobart_summary")
     url = "https://drive.google.com/uc?id=1H13loH6dS_2c2Z21kaBtgz42QsjkdAwO"
-    # url = "https://drive.google.com/file/d/1H13loH6dS_2c2Z21kaBtgz42QsjkdAwO/"
     output = './kobart_summary/config.json'
     print("Download config.json")
     gdown.download(url, output, quiet=False)
