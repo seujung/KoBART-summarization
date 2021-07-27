@@ -106,7 +106,7 @@ class KobartSummaryModule(pl.LightningDataModule):
 class Base(pl.LightningModule):
     def __init__(self, hparams, **kwargs) -> None:
         super(Base, self).__init__()
-        self.hparams = hparams
+        self.save_hyperparameters(hparams)
 
     @staticmethod
     def add_model_specific_args(parent_parser):
@@ -147,8 +147,6 @@ class Base(pl.LightningModule):
         ]
         optimizer = AdamW(optimizer_grouped_parameters,
                           lr=self.hparams.lr, correct_bias=False)
-        # warm up lr
-        # num_workers = (self.hparams.gpus if self.hparams.gpus is not None else 1) * (self.hparams.num_nodes if self.hparams.num_nodes is not None else 1)
         num_workers = self.hparams.num_workers
         data_len = len(self.train_dataloader().dataset)
         logging.info(f'number of workers {num_workers}, data length {data_len}')
@@ -227,8 +225,7 @@ if __name__ == '__main__':
                                                        verbose=True,
                                                        save_last=True,
                                                        mode='min',
-                                                       save_top_k=-1,
-                                                       prefix='kobart_summary')
+                                                       save_top_k=-1)
     tb_logger = pl_loggers.TensorBoardLogger(os.path.join(args.default_root_dir, 'tb_logs'))
     lr_logger = pl.callbacks.LearningRateMonitor()
     trainer = pl.Trainer.from_argparse_args(args, logger=tb_logger,

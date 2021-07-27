@@ -16,9 +16,9 @@ kobart_summary
 ```
 ## Requirements
 ```
-pytorch==1.7.1
-transformers==4.3.3
-pytorch-lightning==1.1.0
+pytorch==1.9.0
+transformers==4.8.2
+pytorch-lightning==1.3.8
 streamlit==0.72.0
 ```
 ## Data
