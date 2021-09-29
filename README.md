@@ -71,7 +71,7 @@ python train.py  --gradient_clip_val 1.0 --max_epochs 50 --default_root_dir logs
   
 | | rouge-1 |rouge-2|rouge-l|
 |-------|--------:|--------:|--------:|
-| Precosion| 0.515 | 0.351|0.415|
+| Precision| 0.515 | 0.351|0.415|
 | Recall| 0.538| 0.359|0.440|
 | F1| 0.505| 0.340|0.415|
 
