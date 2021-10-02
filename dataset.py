@@ -8,13 +8,16 @@ from tqdm import tqdm, trange
 from torch.utils.data import Dataset, DataLoader, IterableDataset
 
 class KoBARTSummaryDataset(Dataset):
-    def __init__(self, file, tok, max_len, pad_index = 0, ignore_index=-100):
+    def __init__(self, file, tok, max_len, pad_index = None, ignore_index=-100):
         super().__init__()
         self.tok = tok
         self.max_len = max_len
         self.docs = pd.read_csv(file, sep='\t')
         self.len = self.docs.shape[0]
-        self.pad_index = pad_index
+        if pad_index is None:
+            self.pad_index = self.tok.pad_token_id
+        else:
+            self.pad_index = pad_index
         self.ignore_index = ignore_index
 
     def add_padding_data(self, inputs):
