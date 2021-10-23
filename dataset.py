@@ -45,7 +45,7 @@ class KoBARTSummaryDataset(Dataset):
 
         label_ids = self.tok.encode(instance['summary'])
         label_ids.append(self.tok.eos_token_id)
-        dec_input_ids = [self.pad_index]
+        dec_input_ids = [self.tok.decoder_start_token_id]
         dec_input_ids += label_ids[:-1]
         dec_input_ids = self.add_padding_data(dec_input_ids)
         label_ids = self.add_ignored_data(label_ids)
