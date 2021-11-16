@@ -1,9 +1,8 @@
 # KoBART-summarization
 
 ## Install KoBART
-```
-~~~ pip install git+https://github.com/SKT-AI/KoBART#egg=kobart ~~~
-```
+- huggingface.co에 있는 binary를 활용
+  - https://huggingface.co/gogamza/kobart-base-v1
 
 ## Download binary
 ```
@@ -16,7 +15,7 @@ kobart_summary
 ```
 ## Requirements
 ```
-pytorch==1.9.0
+pytorch>=1.9.0
 transformers==4.8.2
 pytorch-lightning==1.3.8
 streamlit==0.72.0
