@@ -2,7 +2,7 @@
 
 ## Install KoBART
 ```
-pip install git+https://github.com/SKT-AI/KoBART#egg=kobart
+~~~ pip install git+https://github.com/SKT-AI/KoBART#egg=kobart ~~~
 ```
 
 ## Download binary

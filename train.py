@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader, Dataset
 from dataset import KoBARTSummaryDataset
 from transformers import BartForConditionalGeneration, PreTrainedTokenizerFast
 from transformers.optimization import AdamW, get_cosine_schedule_with_warmup
-from kobart import get_pytorch_kobart_model, get_kobart_tokenizer
+# from kobart import get_pytorch_kobart_model, get_kobart_tokenizer
 
 parser = argparse.ArgumentParser(description='KoBART Summarization')
 
@@ -58,10 +58,7 @@ class KobartSummaryModule(pl.LightningDataModule):
         self.max_len = max_len
         self.train_file_path = train_file
         self.test_file_path = test_file
-        if tok is None:
-            self.tok = get_kobart_tokenizer()
-        else:
-            self.tok = tok
+        self.tok = PreTrainedTokenizerFast.from_pretrained('gogamza/kobart-base-v2')
         self.num_workers = num_workers
 
     @staticmethod
@@ -166,12 +163,12 @@ class Base(pl.LightningModule):
 class KoBARTConditionalGeneration(Base):
     def __init__(self, hparams, **kwargs):
         super(KoBARTConditionalGeneration, self).__init__(hparams, **kwargs)
-        self.model = BartForConditionalGeneration.from_pretrained(get_pytorch_kobart_model())
+        self.model = BartForConditionalGeneration.from_pretrained('gogamza/kobart-base-v1')
         self.model.train()
         self.bos_token = '<s>'
         self.eos_token = '</s>'
         self.pad_token_id = 0
-        self.tokenizer = get_kobart_tokenizer()
+        self.tokenizer = PreTrainedTokenizerFast.from_pretrained('gogamza/kobart-base-v1')
 
     def forward(self, inputs):
 
