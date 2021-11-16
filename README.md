@@ -1,6 +1,6 @@
 # KoBART-summarization
 
-## Install KoBART
+## Load KoBART
 - huggingface.co에 있는 binary를 활용
   - https://huggingface.co/gogamza/kobart-base-v1
 
