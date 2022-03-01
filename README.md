@@ -15,10 +15,10 @@ kobart_summary
 ```
 ## Requirements
 ```
-pytorch>=1.9.0
-transformers==4.8.2
-pytorch-lightning==1.3.8
-streamlit==0.72.0
+pytorch>=1.10.0
+transformers==4.16.2
+pytorch-lightning==1.5.10
+streamlit==1.2.0
 ```
 ## Data
 - [Dacon 한국어 문서 생성요약 AI 경진대회](https://dacon.io/competitions/official/235673/overview/) 의 학습 데이터를 활용함
@@ -33,18 +33,39 @@ streamlit==0.72.0
 |-------|--------:|
 | 뉴스원문| 요약문 |  
 
+- 참조 데이터
+  - AIHUB 문서 요약 데이터 (https://aihub.or.kr/aidata/8054)
+
 
 ## How to Train
 - KoBART summarization fine-tuning
 ```
-bash install_kobart.sh
 pip install -r requirements.txt
 
 [use gpu]
-python train.py  --gradient_clip_val 1.0 --max_epochs 50 --default_root_dir logs  --gpus 1 --batch_size 4 --num_workers 4
+python train.py  --gradient_clip_val 1.0  \
+                 --max_epochs 50 \
+                 --default_root_dir logs \
+                 --gpus 1 \
+                 --batch_size 4 \
+                 --num_workers 4
+
+[use gpu]
+python train.py  --gradient_clip_val 1.0  \
+                 --max_epochs 50 \
+                 --default_root_dir logs \
+                 --strategy ddp \
+                 --gpus 2 \
+                 --batch_size 4 \
+                 --num_workers 4
 
 [use cpu]
-python train.py  --gradient_clip_val 1.0 --max_epochs 50 --default_root_dir logs  --batch_size 4 --num_workers 4
+python train.py  --gradient_clip_val 1.0  \
+                 --max_epochs 50 \
+                 --default_root_dir logs \
+                 --strategy ddp \
+                 --batch_size 4 \
+                 --num_workers 4
 ```
 ## Generation Sample
 | ||Text|
