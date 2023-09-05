@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm, trange
 from torch.utils.data import Dataset, DataLoader
-import pytorch_lightning as pl
+import lightning as L
 from functools import partial
 
 class KoBARTSummaryDataset(Dataset):
@@ -53,12 +53,13 @@ class KoBARTSummaryDataset(Dataset):
 
         return {'input_ids': np.array(input_ids, dtype=np.int_),
                 'decoder_input_ids': np.array(dec_input_ids, dtype=np.int_),
-                'labels': np.array(label_ids, dtype=np.int_)}
+                'labels': np.array(label_ids, dtype=np.int_)
+               }
 
     def __len__(self):
         return self.len
 
-class KobartSummaryModule(pl.LightningDataModule):
+class KobartSummaryModule(L.LightningDataModule):
     def __init__(self, train_file,
                  test_file, tok,
                  max_len=512,

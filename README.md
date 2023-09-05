@@ -41,10 +41,12 @@ tokenizer.decode(summary_ids.squeeze().tolist(), skip_special_tokens=True)
 ```
 ## Requirements
 ```
-pytorch>=1.10.0
-transformers==4.16.2
-pytorch-lightning==1.5.10
-streamlit==1.2.0
+torch==2.0.1
+transformers==4.32.1
+tokenizers==0.13.3
+lightning==2.0.8
+streamlit==1.26.0
+wandb==0.15.9
 ```
 ## Data
 - [Dacon 한국어 문서 생성요약 AI 경진대회](https://dacon.io/competitions/official/235673/overview/) 의 학습 데이터를 활용함
@@ -69,29 +71,13 @@ streamlit==1.2.0
 pip install -r requirements.txt
 
 [use gpu]
-python train.py  --gradient_clip_val 1.0  \
-                 --max_epochs 50 \
-                 --default_root_dir logs \
-                 --gpus 1 \
-                 --batch_size 4 \
-                 --num_workers 4
-
-[use gpu]
-python train.py  --gradient_clip_val 1.0  \
-                 --max_epochs 50 \
-                 --default_root_dir logs \
-                 --strategy ddp \
-                 --gpus 2 \
-                 --batch_size 4 \
-                 --num_workers 4
-
-[use cpu]
-python train.py  --gradient_clip_val 1.0  \
-                 --max_epochs 50 \
-                 --default_root_dir logs \
-                 --strategy ddp \
-                 --batch_size 4 \
-                 --num_workers 4
+python train.py --gradient_clip_val 1.0 \
+                --max_epochs 2 \
+                --checkpoint checkpoint \
+                --accelerator gpu \
+                --num_gpus 4 \
+                --batch_size 32 \
+                --num_workers 4
 ```
 ## Generation Sample
 | ||Text|
@@ -129,7 +115,7 @@ python train.py  --gradient_clip_val 1.0  \
    - 변환 코드를 실행하면 <b>./kobart_summary</b> 에 model binary 가 추출 됨
   
 ```
- python get_model_binary.py --hparams hparam_path --model_binary model_binary_path
+ python get_model_binary.py --model_binary model_binary_path
 ```
 
 - streamlit을 활용하여 Demo 실행
